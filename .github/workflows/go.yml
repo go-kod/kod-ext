@@ -1,0 +1,78 @@
+name: Build and Test
+
+on:
+ push:
+   branches:
+     - 'main'
+ pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        version: ["stable"]
+    services:
+          # Label used to access the service container
+          redis:
+            # Docker Hub image
+            image: redis
+            # Set health checks to wait until redis has started
+            options: >-
+              --health-cmd "redis-cli ping"
+              --health-interval 10s
+              --health-timeout 5s
+              --health-retries 5
+            ports:
+              # Maps port 6379 on service container to the host
+              - 6379:6379
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: ${{ matrix.version }}
+          cache: true
+
+      - name: golangci-lint
+        if: runner.os != 'Windows'
+        uses: golangci/golangci-lint-action@v3.7.0
+        with:
+          args: "--out-${NO_FUTURE}format colored-line-number"
+      
+      - name: golangci-lint
+        if: runner.os == 'Windows'
+        uses: golangci/golangci-lint-action@v3.7.0
+        env:
+          nofuture: out-format
+        with:
+          args: "--%nofuture% colored-line-number"
+
+      - name: generate and test
+        run: |
+            go generate
+            go test -race -cover -coverprofile=coverage.out -covermode=atomic ./... -coverpkg ./...
+      
+      - name: Get changed files
+        uses: tj-actions/changed-files@v40
+      
+      - name: Check changed file count
+        run: |
+          for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
+            echo "$file was changed"
+          done
+          if [ ${{ steps.changed-files.outputs.total_changed_files }} -gt 0 ]; then
+            exit 1
+          fi
+
+      # - uses: codecov/codecov-action@v3
+      #   with:
+      #     token: "b9e39662-490a-4a2f-b80c-c088aded033f"
+      #     files: ./coverage.out # optional
+      #     flags: unittests # optional
+      #     name: codecov-umbrella # optional
+      #     fail_ci_if_error: true # optional (default = false)
+      #     verbose: true # optional (default = false)
