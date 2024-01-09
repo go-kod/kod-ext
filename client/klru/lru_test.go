@@ -39,10 +39,10 @@ func TestCache(t *testing.T) {
 
 	assert.Equal(t, res["1"], "1")
 
-	l2.RemoveAll(context.Background(), "1")
-	time.Sleep(2 * time.Second)
+	assert.Nil(t, l2.RemoveAll(context.Background(), "1"))
+	time.Sleep(4 * time.Second)
 
-	res = l1.BatchGetOrLoad([]string{"1"}, nil)
-
-	assert.NotEqual(t, res["1"], "1")
+	assert.Eventually(t, func() bool {
+		return len(l1.BatchGetOrLoad([]string{"1"}, nil)) == 0
+	}, 10*time.Second, 500*time.Millisecond)
 }

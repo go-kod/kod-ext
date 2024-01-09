@@ -92,10 +92,12 @@ func (l *Cache[K, V]) BatchGetOrLoad(ids []K, fn func(missIds []K) (map[K]V, err
 	return res
 }
 
-func (l *Cache[K, V]) RemoveAll(ctx context.Context, id K) {
+func (l *Cache[K, V]) RemoveAll(ctx context.Context, id K) error {
 	if l.redis != nil {
-		l.redis.Publish(ctx, l.config.Channel, l.getKey(id))
+		return l.redis.Publish(ctx, l.config.Channel, l.getKey(id)).Err()
 	}
+
+	return nil
 }
 
 func (l *Cache[K, V]) getKey(id K) string {
