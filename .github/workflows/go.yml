@@ -57,7 +57,7 @@ jobs:
             go test -race -cover -coverprofile=coverage.out -covermode=atomic ./... -coverpkg ./...
       
       - name: Get changed files
-        uses: tj-actions/changed-files@v40
+        uses: tj-actions/changed-files@v42
       
       - name: Check changed file count
         run: |
