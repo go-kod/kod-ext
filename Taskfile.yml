@@ -1,0 +1,79 @@
+version: '3'
+
+tasks:
+  default:
+    cmds:
+      - task: generate
+      - task: mod
+      - task: lint:golangci-lint
+
+  github-action:
+    cmds:
+      # - task: generate
+      - task: lint:golangci-lint
+      - task: lint:files-changed
+      - task: test
+
+  generate:struct2interface:
+    cmds:
+      - go run github.com/go-kod/kod/cmd/kod struct2interface .
+    deps:
+      - install:mockgen
+
+  generate:
+    cmds:
+      - go run github.com/go-kod/kod/cmd/kod generate ./...
+    deps:
+      - generate:struct2interface
+
+  lint:golangci-lint:
+    cmd: |
+        golangci-lint run ./...
+    deps:
+      - install:golangci-lint
+
+  lint:files-changed:
+    cmd: |
+      git diff --exit-code
+
+  test:
+    cmd: |
+        go test -race -cover -coverprofile=coverage.out -covermode=atomic ./... -coverpkg ./...
+    sources:
+      - "**/**.go"
+    generates:
+      - coverage.out
+
+  test:coverage:
+    cmd: |
+        go tool cover -func=coverage.out
+    deps:
+      - test
+
+  install:mockgen:
+    vars:
+      VERSION: v0.3.0
+    status:
+      - go version -m $GOPATH/bin/mockgen | grep go.uber.org/mock | grep {{.VERSION}}
+    cmd: |
+        go install go.uber.org/mock/mockgen@{{.VERSION}}
+
+  install:golangci-lint:
+    vars:
+      VERSION: v1.54.2
+    status:
+      - go version -m $GOPATH/bin/golangci-lint | grep github.com/golangci/golangci-lint | grep {{.VERSION}}
+    cmd: |
+        go install github.com/golangci/golangci-lint/cmd/golangci-lint@{{.VERSION}}
+
+  install:kod:
+    vars:
+      VERSION: devel
+    status:
+      - go version -m $GOPATH/bin/kod | grep github.com/go-kod/kod | grep {{.VERSION}}
+    cmd: |
+        go install github.com/go-kod/kod/cmd/kod@{{.VERSION}}
+
+  mod:
+    cmds:
+      - go mod tidy
