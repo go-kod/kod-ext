@@ -1,0 +1,29 @@
+version: 2
+
+updates:
+  - package-ecosystem: gomod
+    directories:
+      - /
+    labels:
+      - dependencies
+    schedule:
+      interval: "weekly"
+    groups:
+      gomod-normal-deps:
+        update-types:
+          - patch
+          - minor
+      gomod-breaking-deps:
+        update-types:
+          - major
+
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    labels:
+      - dependencies
+    schedule:
+      interval: "weekly"
+    groups:
+      actions-deps:
+        patterns:
+          - "*"

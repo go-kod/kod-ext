@@ -1,0 +1,9 @@
+version: '3'
+env:
+  GOBIN: { sh: pwd }
+
+tasks:
+  default:
+    cmds:
+      - go mod tidy
+      - go test ./...
