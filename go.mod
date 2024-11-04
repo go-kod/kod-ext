@@ -7,7 +7,7 @@ toolchain go1.23.0
 require (
 	dario.cat/mergo v1.0.1
 	github.com/gin-gonic/gin v1.10.0
-	github.com/go-kod/kod v0.15.0
+	github.com/go-kod/kod v0.15.3
 	github.com/go-resty/resty/v2 v2.15.3
 	github.com/grafana/pyroscope-go v1.2.0
 	github.com/redis/go-redis/extra/redisotel/v9 v9.7.0
