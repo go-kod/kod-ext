@@ -13,11 +13,15 @@ import (
 type Client = resty.Client
 
 type Config struct {
-	BaseURL string        `toml:"baseURL"`
-	Timeout time.Duration `toml:"timeout"`
+	BaseURL string        `default:"-"`
+	Timeout time.Duration `default:"3s"`
 }
 
 func (c Config) Build() *Client {
+	if c.BaseURL == "" {
+		panic("resty base url is required")
+	}
+
 	cc := resty.New()
 	cc.SetBaseURL(c.BaseURL)
 	cc.SetTimeout(c.Timeout)

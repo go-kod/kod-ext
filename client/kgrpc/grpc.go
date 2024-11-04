@@ -4,8 +4,6 @@ import (
 	"context"
 	"time"
 
-	"dario.cat/mergo"
-	"github.com/samber/lo"
 	"go.opentelemetry.io/contrib/instrumentation/google.golang.org/grpc/otelgrpc"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
@@ -16,8 +14,8 @@ import (
 type ClientConn = grpc.ClientConn
 
 type Config struct {
-	Target  string
-	Timeout time.Duration
+	Target  string        `default:"-"`
+	Timeout time.Duration `default:"3s"`
 
 	registry registry.Registry
 }
@@ -28,9 +26,9 @@ func (c Config) WithRegistry(r registry.Registry) Config {
 }
 
 func (c Config) Build(opts ...grpc.DialOption) *ClientConn {
-	lo.Must0(mergo.Merge(&c, Config{
-		Timeout: 3 * time.Second,
-	}))
+	if c.Target == "" {
+		panic("grpc target is required")
+	}
 
 	ctx := context.Background()
 

@@ -6,8 +6,6 @@ import (
 	"net/http/httptrace"
 	"time"
 
-	"dario.cat/mergo"
-	"github.com/samber/lo"
 	"go.opentelemetry.io/contrib/instrumentation/net/http/httptrace/otelhttptrace"
 	"go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp"
 )
@@ -15,15 +13,14 @@ import (
 type Client = http.Client
 
 type ClientConfig struct {
-	Address string
-	Timeout time.Duration
+	Address string        `default:"-"`
+	Timeout time.Duration `default:"3s"`
 }
 
 func (c ClientConfig) Build() *Client {
-
-	lo.Must0(mergo.Merge(&c, ClientConfig{
-		Timeout: 3 * time.Second,
-	}))
+	if c.Address == "" {
+		panic("http address is required")
+	}
 
 	defaultTransport := http.DefaultTransport.(*http.Transport).Clone()
 	defaultTransport.Proxy = nil

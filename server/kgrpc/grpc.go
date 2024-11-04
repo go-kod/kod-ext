@@ -24,7 +24,7 @@ var (
 )
 
 type Config struct {
-	Address string
+	Address string `default:"-"`
 }
 
 type Server struct {

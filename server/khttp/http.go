@@ -14,7 +14,7 @@ import (
 )
 
 type Config struct {
-	Address string
+	Address string `default:"-"`
 }
 
 func (c Config) Build() *Server {

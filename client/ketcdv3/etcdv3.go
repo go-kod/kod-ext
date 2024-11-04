@@ -5,23 +5,18 @@ import (
 	"fmt"
 	"time"
 
-	"dario.cat/mergo"
 	clientv3 "go.etcd.io/etcd/client/v3"
 	"google.golang.org/grpc"
 )
 
 type Config struct {
-	Endpoints []string
-	Timeout   time.Duration
+	Endpoints []string      `default:"-"`
+	Timeout   time.Duration `default:"3s"`
 }
 
 func (r Config) Build(_ context.Context) (*clientv3.Client, error) {
-	err := mergo.Merge(&r, Config{
-		Endpoints: []string{"localhost:2379"},
-		Timeout:   3 * time.Second,
-	})
-	if err != nil {
-		return nil, fmt.Errorf("failed to merge config: %w", err)
+	if len(r.Endpoints) == 0 {
+		return nil, fmt.Errorf("no etcd endpoints provided")
 	}
 
 	etcd, err := clientv3.New(clientv3.Config{

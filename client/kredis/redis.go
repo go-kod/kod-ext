@@ -3,30 +3,25 @@ package kredis
 import (
 	"time"
 
-	"dario.cat/mergo"
 	"github.com/redis/go-redis/extra/redisotel/v9"
 	redis "github.com/redis/go-redis/v9"
-	"github.com/samber/lo"
 )
 
 type Client = redis.Client
 
 type Config struct {
-	Addr         string
-	DialTimeout  time.Duration
-	ReadTimeout  time.Duration
-	WriteTimeout time.Duration
-	Password     string
-	DB           int
+	Addr         string        `default:"-"`
+	DialTimeout  time.Duration `default:"3s"`
+	ReadTimeout  time.Duration `default:"1s"`
+	WriteTimeout time.Duration `default:"1s"`
+	Password     string        `default:""`
+	DB           int           `default:"0"`
 }
 
 func (c Config) Build() *Client {
-
-	lo.Must0(mergo.Merge(&c, Config{
-		DialTimeout:  3 * time.Second,
-		ReadTimeout:  time.Second,
-		WriteTimeout: time.Second,
-	}))
+	if c.Addr == "" {
+		panic("redis addr is required")
+	}
 
 	rdb := redis.NewClient(&redis.Options{
 		Addr:         c.Addr,

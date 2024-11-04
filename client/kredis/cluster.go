@@ -3,29 +3,25 @@ package kredis
 import (
 	"time"
 
-	"dario.cat/mergo"
 	"github.com/redis/go-redis/extra/redisotel/v9"
 	redis "github.com/redis/go-redis/v9"
-	"github.com/samber/lo"
 )
 
 type ClusterClient = redis.ClusterClient
 
 type ClusterConfig struct {
-	Addrs        []string
-	DialTimeout  time.Duration
-	ReadTimeout  time.Duration
-	WriteTimeout time.Duration
-	Password     string
-	DB           int
+	Addrs        []string      `default:"-"`
+	DialTimeout  time.Duration `default:"3s"`
+	ReadTimeout  time.Duration `default:"1s"`
+	WriteTimeout time.Duration `default:"1s"`
+	Password     string        `default:""`
+	DB           int           `default:"0"`
 }
 
 func (c ClusterConfig) Build() *ClusterClient {
-	lo.Must0(mergo.Merge(&c, Config{
-		DialTimeout:  3 * time.Second,
-		ReadTimeout:  time.Second,
-		WriteTimeout: time.Second,
-	}))
+	if len(c.Addrs) == 0 {
+		panic("redis cluster addrs is required")
+	}
 
 	rdb := redis.NewClusterClient(&redis.ClusterOptions{
 		Addrs:        c.Addrs,

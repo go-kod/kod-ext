@@ -7,7 +7,7 @@ import (
 	"time"
 
 	// nolint
-	"dario.cat/mergo"
+
 	clientv3 "go.etcd.io/etcd/client/v3"
 	"go.etcd.io/etcd/client/v3/concurrency"
 	"go.etcd.io/etcd/client/v3/naming/endpoints"
@@ -21,19 +21,15 @@ import (
 
 // nolint
 type Config struct {
-	Endpoints []string
-	Timeout   time.Duration
-	TTL       int
+	Endpoints []string      `default:"-"`
+	Timeout   time.Duration `default:"3s"`
+	TTL       int           `default:"60"`
 }
 
 // nolint
 func (r Config) Build(ctx context.Context) (*client, error) {
-	err := mergo.Merge(&r, Config{
-		Timeout: 3 * time.Second,
-		TTL:     60,
-	})
-	if err != nil {
-		return nil, fmt.Errorf("failed to merge config: %w", err)
+	if len(r.Endpoints) == 0 {
+		return nil, fmt.Errorf("no etcd endpoints provided")
 	}
 
 	etcd, err := clientv3.New(clientv3.Config{

@@ -7,10 +7,14 @@ import (
 )
 
 type Config struct {
-	Dsn string
+	Dsn string `default:"-"`
 }
 
 func (c Config) Build() *DB {
+	if c.Dsn == "" {
+		panic("gorm dsn is required")
+	}
+
 	db, err := gorm.Open(mysql.Open(c.Dsn), &gorm.Config{})
 	if err != nil {
 		panic(err)

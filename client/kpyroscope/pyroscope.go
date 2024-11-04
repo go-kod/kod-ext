@@ -10,10 +10,14 @@ import (
 )
 
 type Config struct {
-	ServerAddress string
+	ServerAddress string `default:"-"`
 }
 
 func (c Config) Build(ctx context.Context) (*pyroscope.Profiler, error) {
+	if c.ServerAddress == "" {
+		return nil, fmt.Errorf("pyroscope server address is required")
+	}
+
 	k := kod.FromContext(ctx)
 
 	p, err := pyroscope.Start(pyroscope.Config{
