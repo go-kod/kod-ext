@@ -13,7 +13,7 @@ require (
 	github.com/redis/go-redis/v9 v9.7.0
 	github.com/samber/lo v1.47.0
 	github.com/uptrace/opentelemetry-go-extra/otelsql v0.3.2
-	go.etcd.io/etcd/client/v3 v3.5.16
+	go.etcd.io/etcd/client/v3 v3.5.17
 	go.opentelemetry.io/contrib/instrumentation/github.com/gin-gonic/gin/otelgin v0.57.0
 	go.opentelemetry.io/contrib/instrumentation/google.golang.org/grpc/otelgrpc v0.57.0
 	go.opentelemetry.io/contrib/instrumentation/net/http/httptrace/otelhttptrace v0.57.0
@@ -92,8 +92,8 @@ require (
 	github.com/twitchyliquid64/golang-asm v0.15.1 // indirect
 	github.com/ugorji/go/codec v1.2.12 // indirect
 	github.com/yusufpapurcu/wmi v1.2.4 // indirect
-	go.etcd.io/etcd/api/v3 v3.5.16 // indirect
-	go.etcd.io/etcd/client/pkg/v3 v3.5.16 // indirect
+	go.etcd.io/etcd/api/v3 v3.5.17 // indirect
+	go.etcd.io/etcd/client/pkg/v3 v3.5.17 // indirect
 	go.opentelemetry.io/contrib/bridges/otelslog v0.6.0 // indirect
 	go.opentelemetry.io/contrib/bridges/prometheus v0.56.0 // indirect
 	go.opentelemetry.io/contrib/exporters/autoexport v0.56.0 // indirect
