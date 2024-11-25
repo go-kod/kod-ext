@@ -7,7 +7,7 @@ toolchain go1.23.0
 require (
 	github.com/gin-gonic/gin v1.10.0
 	github.com/go-kod/kod v0.16.0
-	github.com/go-resty/resty/v2 v2.16.0
+	github.com/go-resty/resty/v2 v2.16.2
 	github.com/grafana/pyroscope-go v1.2.0
 	github.com/redis/go-redis/extra/redisotel/v9 v9.7.0
 	github.com/redis/go-redis/v9 v9.7.0
@@ -23,7 +23,7 @@ require (
 	google.golang.org/grpc v1.68.0
 	gorm.io/driver/mysql v1.5.7
 	gorm.io/gorm v1.25.12
-	gorm.io/plugin/opentelemetry v0.1.8
+	gorm.io/plugin/opentelemetry v0.1.10
 )
 
 require (
