@@ -13,10 +13,12 @@ type Config struct {
 	ServerAddress string
 }
 
-func (c Config) Init(ctx context.Context, k *kod.Kod) error {
+func (c Config) Init(ctx context.Context) error {
 	if c.ServerAddress == "" {
 		return fmt.Errorf("pyroscope server address is required")
 	}
+
+	k := kod.FromContext(ctx)
 
 	p, err := pyroscope.Start(pyroscope.Config{
 		ApplicationName: k.Config().Name,

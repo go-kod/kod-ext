@@ -14,7 +14,9 @@ type Config struct {
 	LogLevel slog.Level `json:"log_level" default:"info"`
 }
 
-func (c Config) Init(ctx context.Context, k *kod.Kod) error {
+func (c Config) Init(ctx context.Context) error {
+	k := kod.FromContext(ctx)
+
 	defaults.Set(&c)
 
 	handler := kslog.NewLevelHandler(c.LogLevel)(

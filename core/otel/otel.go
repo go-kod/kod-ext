@@ -15,7 +15,7 @@ import (
 	sdkmetric "go.opentelemetry.io/otel/sdk/metric"
 	sdkresource "go.opentelemetry.io/otel/sdk/resource"
 	sdktrace "go.opentelemetry.io/otel/sdk/trace"
-	semconv "go.opentelemetry.io/otel/semconv/v1.4.0"
+	semconv "go.opentelemetry.io/otel/semconv/v1.27.0"
 )
 
 type Config struct {
@@ -24,7 +24,9 @@ type Config struct {
 	EnableLog    bool
 }
 
-func (c Config) Init(ctx context.Context, k *kod.Kod) error {
+func (c Config) Init(ctx context.Context) error {
+	k := kod.FromContext(ctx)
+
 	resource := lo.Must(sdkresource.New(ctx,
 		sdkresource.WithFromEnv(),
 		sdkresource.WithTelemetrySDK(),
@@ -33,7 +35,7 @@ func (c Config) Init(ctx context.Context, k *kod.Kod) error {
 		sdkresource.WithAttributes(
 			semconv.ServiceNameKey.String(k.Config().Name),
 			semconv.ServiceVersionKey.String(k.Config().Version),
-			semconv.DeploymentEnvironmentKey.String(k.Config().Env),
+			semconv.DeploymentEnvironmentNameKey.String(k.Config().Env),
 		)),
 	)
 
