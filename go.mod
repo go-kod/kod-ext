@@ -5,13 +5,16 @@ go 1.22.7
 toolchain go1.23.0
 
 require (
+	github.com/avast/retry-go/v4 v4.6.0
 	github.com/gin-gonic/gin v1.10.0
 	github.com/go-kod/kod v0.16.1
 	github.com/go-resty/resty/v2 v2.16.2
 	github.com/grafana/pyroscope-go v1.2.0
+	github.com/juju/ratelimit v1.0.2
 	github.com/redis/go-redis/extra/redisotel/v9 v9.7.0
 	github.com/redis/go-redis/v9 v9.7.0
 	github.com/samber/lo v1.47.0
+	github.com/sony/gobreaker v1.0.0
 	github.com/uptrace/opentelemetry-go-extra/otelsql v0.3.2
 	go.etcd.io/etcd/client/v3 v3.5.17
 	go.opentelemetry.io/contrib/instrumentation/github.com/gin-gonic/gin/otelgin v0.58.0
@@ -19,6 +22,7 @@ require (
 	go.opentelemetry.io/contrib/instrumentation/net/http/httptrace/otelhttptrace v0.58.0
 	go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp v0.58.0
 	go.opentelemetry.io/otel v1.33.0
+	go.opentelemetry.io/otel/metric v1.33.0
 	go.opentelemetry.io/otel/trace v1.33.0
 	google.golang.org/grpc v1.69.2
 	gorm.io/driver/mysql v1.5.7
@@ -112,7 +116,6 @@ require (
 	go.opentelemetry.io/otel/exporters/stdout/stdoutmetric v1.32.0 // indirect
 	go.opentelemetry.io/otel/exporters/stdout/stdouttrace v1.32.0 // indirect
 	go.opentelemetry.io/otel/log v0.8.0 // indirect
-	go.opentelemetry.io/otel/metric v1.33.0 // indirect
 	go.opentelemetry.io/otel/sdk v1.32.0 // indirect
 	go.opentelemetry.io/otel/sdk/log v0.8.0 // indirect
 	go.opentelemetry.io/otel/sdk/metric v1.32.0 // indirect
