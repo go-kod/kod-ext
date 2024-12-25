@@ -19,7 +19,7 @@ type Config struct {
 	ConsecutiveFailures uint32        `json:"consecutive_failures" default:"3"`
 }
 
-func (c Config) Interceptor() interceptor.Interceptor {
+func (c Config) Build() interceptor.Interceptor {
 	if !c.Enable {
 		return nil
 	}

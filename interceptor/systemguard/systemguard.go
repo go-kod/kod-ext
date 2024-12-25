@@ -16,7 +16,7 @@ type Config struct {
 	CpuUsage   uint `json:"cpu_usage" default:"80"`
 }
 
-func (c Config) Interceptor() interceptor.Interceptor {
+func (c Config) Build() interceptor.Interceptor {
 	if !c.Enable {
 		return nil
 	}

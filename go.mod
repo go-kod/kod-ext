@@ -14,6 +14,7 @@ require (
 	github.com/redis/go-redis/extra/redisotel/v9 v9.7.0
 	github.com/redis/go-redis/v9 v9.7.0
 	github.com/samber/lo v1.47.0
+	github.com/shirou/gopsutil/v4 v4.24.10
 	github.com/sony/gobreaker v1.0.0
 	github.com/uptrace/opentelemetry-go-extra/otelsql v0.3.2
 	go.etcd.io/etcd/client/v3 v3.5.17
@@ -84,7 +85,6 @@ require (
 	github.com/redis/go-redis/extra/rediscmd/v9 v9.7.0 // indirect
 	github.com/sagikazarmark/locafero v0.6.0 // indirect
 	github.com/sagikazarmark/slog-shim v0.1.0 // indirect
-	github.com/shirou/gopsutil/v4 v4.24.10 // indirect
 	github.com/sourcegraph/conc v0.3.0 // indirect
 	github.com/spf13/afero v1.11.0 // indirect
 	github.com/spf13/cast v1.7.0 // indirect

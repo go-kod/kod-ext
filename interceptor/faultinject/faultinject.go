@@ -11,14 +11,14 @@ import (
 	"go.opentelemetry.io/otel/trace"
 )
 
-type FaultInjectConfig struct {
+type Config struct {
 	Enable     bool          `json:"enable"`
 	Delay      time.Duration `json:"delay"`
 	Error      string        `json:"error"`
 	Percentage uint32        `json:"percentage" default:"100"`
 }
 
-func (c FaultInjectConfig) Interceptor() interceptor.Interceptor {
+func (c Config) Build() interceptor.Interceptor {
 	if !c.Enable || c.Percentage == 0 {
 		return nil
 	}
