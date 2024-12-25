@@ -1,4 +1,4 @@
-package kpyroscope
+package pyroscope
 
 import (
 	"context"
@@ -10,15 +10,13 @@ import (
 )
 
 type Config struct {
-	ServerAddress string `default:"-"`
+	ServerAddress string
 }
 
-func (c Config) Build(ctx context.Context) (*pyroscope.Profiler, error) {
+func (c Config) Init(ctx context.Context, k *kod.Kod) error {
 	if c.ServerAddress == "" {
-		return nil, fmt.Errorf("pyroscope server address is required")
+		return fmt.Errorf("pyroscope server address is required")
 	}
-
-	k := kod.FromContext(ctx)
 
 	p, err := pyroscope.Start(pyroscope.Config{
 		ApplicationName: k.Config().Name,
@@ -42,8 +40,12 @@ func (c Config) Build(ctx context.Context) (*pyroscope.Profiler, error) {
 		},
 	})
 	if err != nil {
-		return nil, fmt.Errorf("failed to start pyroscope: %w", err)
+		return fmt.Errorf("failed to start pyroscope: %w", err)
 	}
 
-	return p, nil
+	k.Defer("pyroscope", func(ctx context.Context) error {
+		return p.Stop()
+	})
+
+	return nil
 }
