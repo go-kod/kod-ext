@@ -11,9 +11,9 @@ import (
 )
 
 type Config struct {
-	Enable     bool `json:"enable"`
-	SystemLoad uint `json:"system_load"`
-	CpuUsage   uint `json:"cpu_usage" default:"80"`
+	Enable     bool
+	SystemLoad uint
+	CpuUsage   uint `default:"80"`
 }
 
 func (c Config) Build() interceptor.Interceptor {

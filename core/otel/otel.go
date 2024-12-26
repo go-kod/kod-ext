@@ -18,11 +18,7 @@ import (
 	semconv "go.opentelemetry.io/otel/semconv/v1.27.0"
 )
 
-type Config struct {
-	EnableTrace  bool
-	EnableMetric bool
-	EnableLog    bool
-}
+type Config struct{}
 
 func (c Config) Init(ctx context.Context) error {
 	k := kod.FromContext(ctx)
@@ -40,7 +36,7 @@ func (c Config) Init(ctx context.Context) error {
 	)
 
 	// configure trace provider
-	if c.EnableTrace {
+	{
 		spanExporter := lo.Must(autoexport.NewSpanExporter(ctx))
 		spanProvider := sdktrace.NewTracerProvider(
 			sdktrace.WithBatcher(spanExporter),
@@ -58,7 +54,7 @@ func (c Config) Init(ctx context.Context) error {
 	}
 
 	// configure metric provider
-	if c.EnableMetric {
+	{
 		lo.Must0(host.Start())
 		lo.Must0(runtime.Start())
 
@@ -73,7 +69,7 @@ func (c Config) Init(ctx context.Context) error {
 	}
 
 	// configure log provider
-	if c.EnableLog {
+	{
 		logExporter := lo.Must(autoexport.NewLogExporter(ctx))
 		loggerProvider := sdklog.NewLoggerProvider(
 			sdklog.WithProcessor(
